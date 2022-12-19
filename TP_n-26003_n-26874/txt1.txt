@@ -1,0 +1,3 @@
+0001;Paulo Silva;123456789;52
+0003;Maria João Rodrigues;96543210;40
+0002;João Nuno Bettencourt;123321123;25
