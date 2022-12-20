@@ -1,8 +1,8 @@
 #define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
+#include <locale.h>
 #include <stdlib.h>
 #include <string.h>
-#include <locale.h>
 
 #define MAX_LINE_LEN 256
 
@@ -78,7 +78,7 @@ int main() {
         fclose(txt1);
     }
     
-    //-------------------------------------------------------------------------------------------------------------------------
+    //-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
     txt2 = fopen("txt2.txt", "r");
 
@@ -106,7 +106,7 @@ int main() {
     }
 
     
-    //-------------------------------------------------------------------------------------------------------------------------
+    //-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
     txt3 = fopen("txt3.txt", "r");
 
@@ -122,7 +122,7 @@ int main() {
 
         while (fgets(linha, MAX_LINE_LEN, txt3) != NULL) {
             //0001; 01 - 01 - 2022; 10h30; 20 - 01 - 2022; 11h45; Marcha; 15; km
-            //%d;%d-%d-%d;%dh%d;%d-%d-%d;%dh%d;%[^;];%d;%s
+            //d;d-d-d;dhd;d-d-d;dhd;%[^;];d;s
             sscanf(linha, "%d;%d-%d-%d;%dh%d;%d-%d-%d;%dh%d;%[^;];%d;%s", &partplan.num, &partplan.datainicio.dia, &partplan.datainicio.mes, &partplan.datainicio.ano,
                 &partplan.horarioinicio.hora, &partplan.horarioinicio.minutos, &partplan.datafim.dia, &partplan.datafim.mes, &partplan.datafim.ano,
                 &partplan.horariofim.hora, &partplan.horariofim.minutos, partplan.nomeativ, &partplan.distancia, partplan.unidmedida);
@@ -133,7 +133,31 @@ int main() {
         fclose(txt3);
     }
 
-    //-------------------------------------------------------------------------------------------------------------------------
+    //-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    int numero, diai, mesi, anoi, diaf, mesf, anof, total = 0;
+    char nomativ[50];
+    printf("Atividades registadas:\n");
+    printf("Marcha\nBTT\nWindsurfing\nNatação\n");
+    printf("\nNumero da pessoa:");
+    scanf("%d", &numero);
+    printf("Nome da atividade:");
+    scanf("%s", nomativ);
+    printf("Primeira data [d-m-a]:");
+    scanf("%d-%d-%d", &diai, &mesi, &anoi);
+    printf("Segunda data [d-m-a]:");
+    scanf("%d-%d-%d", &diaf, &mesf, &anof);
+
+
+    for (int c = 0; c < numativ; c++) {
+
+        if(numero == infativ[c].num)
+            if ((diai <= infativ[c].data.dia && infativ[c].data.dia <= diaf) && (mesi <= infativ[c].data.mes && infativ[c].data.mes <= mesf) 
+                && (anoi <= infativ[c].data.ano && infativ[c].data.ano <= anof) && !(strcmp(nomativ,infativ[c].nomeativ)))
+                total++;
+   
+    }
+
+    printf("Total: %d", total);
 
     return 0;
 }
