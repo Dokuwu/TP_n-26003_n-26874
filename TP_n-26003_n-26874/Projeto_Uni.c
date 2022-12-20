@@ -1,48 +1,47 @@
 #define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
-#include <locale.h>
-#include <stdlib.h> 
+#include <stdlib.h>
 #include <string.h>
 
-#define linhas 20
-#define colunas 50
+#define MAX_LINE_LEN 256
 
+typedef struct {
+    int num;
+    char nome[MAX_LINE_LEN];
+    long long numphone;
+    int idade;
+} InfParti;
 
-void dados_participantes() {
-    int i, j, num, tel, idade, tamanho_fich = 0;
-    FILE* dados_part;
-    char strings[linhas][colunas];
-    char nome[linhas][colunas];
-    int aux;
-    i = 0;
-    dados_part = fopen("dados_participantes.txt","r");
-    printf("Conteudo do ficheiro:\n");
-    if (dados_part != NULL)
-    {
-        while (!feof(dados_part))
-        {
-            fgets(strings, linhas, dados_part);
-            strcpy(nome[i], strings);
-            i++;
-            tamanho_fich++;
+int main() {
+    FILE* txt1 = fopen("txt1.txt", "r");
+    InfParti infparti[3];//Array com informação dos participantes
+    InfParti parti; //Participante
+    int numparti = 0; //numero de participantes
+    char linha[MAX_LINE_LEN];
+
+    if (txt1 == NULL) {
+        perror("Erro ao abrir ficheiro");
+        return 1;
+    }
+    else {
+        while (fgets(linha, MAX_LINE_LEN, txt1) != NULL) {
+            // fscanf reads from the named input stream. sscanf reads from the character string s.
+            // fscanf(): fscanf() reads formatted data from file and stores it into variables.
+            // sscanf(): sscanf() is used to read formatted input from the string.
+            sscanf(linha, "%d;%[^;];%lld;%d", &parti.num, parti.nome, &parti.numphone, &parti.idade);
+
+            infparti[numparti++] = parti;
         }
-     
-        fclose(dados_part);
-    }
-    else
-    {
-        printf("Impossivel abrir o ficheiro");
+        fclose(txt1);
     }
 
-    for (i = 0; i < tamanho_fich; i++)
-    {
-        printf("%s", nome[i]);
+    for(int c = 0; c < numparti; c++){
+    printf("Practitioner number: %d\n", infparti[c].num);
+    printf("Practitioner name: %s\n", infparti[c].nome);
+    printf("Practitioner telephone: %lld\n", infparti[c].numphone);
+    printf("Practitioner age: %d\n", infparti[c].idade);
+    printf("\n");
     }
-}
 
-
-void main()
-{
-    setlocale(LC_ALL, "Portuguese");
-    dados_participantes();
+        return 0;
 }
