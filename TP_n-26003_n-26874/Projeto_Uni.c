@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <locale.h>
 
 #define MAX_LINE_LEN 256
 
@@ -12,18 +13,59 @@ typedef struct {
     int idade;
 } InfParti;
 
+//informação de cada  atividade realizada por cada praticante, nomeadamente, número de praticante, data, nome da atividade, 
+//hora de início da atividade, tempo de duração da atividade, distância e unidades de medida
+typedef struct {
+    int dia, mes, ano;
+} Data;
+
+typedef struct {
+    int hora, minutos;
+} Horario;
+
+typedef struct {
+    int num;
+    Data data;
+    char nomeativ[MAX_LINE_LEN];
+    Horario inicio;
+    int duracao, distancia;
+    char unidmedida[MAX_LINE_LEN];
+} Infativ;
+
+//contendo os dados dos planos de atividades para cada praticante.Cada linha deve identificar o praticante, data e hora de início e fim
+//da atividade, atividade, distância e medida a atingir :
+
+typedef struct {
+    int num;
+    Data datainicio, datafim;
+    Horario horarioinicio, horariofim;
+    char nomeativ[MAX_LINE_LEN];
+    int distancia;
+    char unidmedida[MAX_LINE_LEN];
+} Planativ;
+
+
 int main() {
-    FILE* txt1 = fopen("txt1.txt", "r");
-    InfParti infparti[3];//Array com informação dos participantes
-    InfParti parti; //Participante
+    setlocale(LC_ALL, "pt_PT.UTF-8");
+
+    FILE* txt1;
+    FILE* txt2;
+    FILE* txt3;
+
     int numparti = 0; //numero de participantes
     char linha[MAX_LINE_LEN];
 
+    txt1 = fopen("txt1.txt", "r");
+
+    InfParti parti; //Participante
+    InfParti infparti[10];//Array com informação dos participantes
+
     if (txt1 == NULL) {
-        perror("Erro ao abrir ficheiro");
-        return 1;
+        printf("Erro ao abrir ficheiro txt1");
+        return 0;
     }
     else {
+
         while (fgets(linha, MAX_LINE_LEN, txt1) != NULL) {
             // fscanf reads from the named input stream. sscanf reads from the character string s.
             // fscanf(): fscanf() reads formatted data from file and stores it into variables.
@@ -32,16 +74,66 @@ int main() {
 
             infparti[numparti++] = parti;
         }
+
         fclose(txt1);
     }
+    
+    //-------------------------------------------------------------------------------------------------------------------------
 
-    for(int c = 0; c < numparti; c++){
-    printf("Practitioner number: %d\n", infparti[c].num);
-    printf("Practitioner name: %s\n", infparti[c].nome);
-    printf("Practitioner telephone: %lld\n", infparti[c].numphone);
-    printf("Practitioner age: %d\n", infparti[c].idade);
-    printf("\n");
+    txt2 = fopen("txt2.txt", "r");
+
+    Infativ partiativ; //Participante nas atividades
+    Infativ infativ[10];//Array com informação das atividades
+    int numativ = 0;
+
+    if (txt2 == NULL) {
+        printf("Erro ao abrir ficheiro txt2");
+        return 0;
+    }
+    else {
+
+        while (fgets(linha, MAX_LINE_LEN, txt2) != NULL) {
+                            
+            //0001;12-07-2022;10:55;Marcha;23;2;km
+            //d;d-d-d;d:d:s:d:d:s
+            sscanf(linha, "%d;%d-%d-%d;%d:%d;%[^;];%d;%d;%s", &partiativ.num, &partiativ.data.dia, &partiativ.data.mes, &partiativ.data.ano, &partiativ.inicio.hora, &partiativ.inicio.minutos,
+                partiativ.nomeativ, &partiativ.duracao, &partiativ.distancia, partiativ.unidmedida);
+
+            infativ[numativ++] = partiativ;
+        }
+
+        fclose(txt2);
     }
 
+    
+    //-------------------------------------------------------------------------------------------------------------------------
+
+    txt3 = fopen("txt3.txt", "r");
+
+    Planativ partplan; //Participante nas atividades
+    Planativ planativ[10];//Array com informação das atividades
+    int numplanativ = 0;
+
+    if (txt3 == NULL) {
+        perror("Erro ao abrir ficheiro txt3");
         return 0;
+    }
+    else {
+
+        while (fgets(linha, MAX_LINE_LEN, txt3) != NULL) {
+            //0001; 01 - 01 - 2022; 10h30; 20 - 01 - 2022; 11h45; Marcha; 15; km
+            //%d;%d-%d-%d;%dh%d;%d-%d-%d;%dh%d;%[^;];%d;%s
+            sscanf(linha, "%d;%d-%d-%d;%dh%d;%d-%d-%d;%dh%d;%[^;];%d;%s", &partplan.num, &partplan.datainicio.dia, &partplan.datainicio.mes, &partplan.datainicio.ano,
+                &partplan.horarioinicio.hora, &partplan.horarioinicio.minutos, &partplan.datafim.dia, &partplan.datafim.mes, &partplan.datafim.ano,
+                &partplan.horariofim.hora, &partplan.horariofim.minutos, partplan.nomeativ, &partplan.distancia, partplan.unidmedida);
+
+            planativ[numplanativ++] = partplan;
+        }
+
+        fclose(txt3);
+    }
+
+    //-------------------------------------------------------------------------------------------------------------------------
+
+    return 0;
 }
