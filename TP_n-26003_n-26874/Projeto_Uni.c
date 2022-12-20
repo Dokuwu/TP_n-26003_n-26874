@@ -1,7 +1,7 @@
 #define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
-#include <locale.h>
 #include <stdlib.h>
+#include <locale.h>
 #include <string.h>
 
 #define MAX_LINE_LEN 256
@@ -46,7 +46,7 @@ typedef struct {
 
 
 int main() {
-    setlocale(LC_ALL, "pt_PT.UTF-8");
+    setlocale(LC_ALL, "");
 
     FILE* txt1;
     FILE* txt2;
