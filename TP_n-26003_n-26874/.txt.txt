@@ -1,0 +1,12 @@
+
+    for (int c = 0; c < numparti; c++)
+        printf("%d;%s;%lld;%d\n", infparti[c].num, infparti[c].nome, infparti[c].numphone, infparti[c].idade);
+    printf("\n");
+    for (int c = 0; c < numativ; c++)
+        printf("%d;%d-%d-%d;%d:%d;%s;%d;%d;%s\n", infativ[c].num, infativ[c].data.dia, infativ[c].data.mes, infativ[c].data.ano, infativ[c].inicio.hora, infativ[c].inicio.minutos,
+            infativ[c].nomeativ, infativ[c].duracao, infativ[c].dist, infativ[c].unidmedida);
+    printf("\n");
+    for (int c = 0; c < numplanativ; c++)
+        printf("%d;%d-%d-%d;%dh%d;%d-%d-%d;%dh%d;%s;%d;%s\n", planativ[c].num, planativ[c].datai.dia, planativ[c].datai.mes, planativ[c].datai.ano,
+            planativ[c].horarioi.hora, planativ[c].horarioi.minutos, planativ[c].dataf.dia, planativ[c].dataf.mes, planativ[c].dataf.ano,
+            planativ[c].horariof.hora, planativ[c].horariof.minutos, planativ[c].nomeativ, planativ[c].dist, planativ[c].unidmedida);

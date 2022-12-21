@@ -44,7 +44,7 @@ typedef struct {
     char unidmedida[MAX_LINE_LEN];
 } Planativ;
 
-int uno(FILE* txt1, char linha[MAX_LINE_LEN], int numparti, InfParti infparti[10]) {
+int uno(FILE* txt1, char linha[MAX_LINE_LEN], int numparti, InfParti infparti[10], int numeros[50]) {
 
     InfParti parti; //Participante
 
@@ -60,6 +60,7 @@ int uno(FILE* txt1, char linha[MAX_LINE_LEN], int numparti, InfParti infparti[10
             // sscanf(): sscanf() is used to read formatted input from the string.
             sscanf(linha, "%d;%[^;];%lld;%d", &parti.num, parti.nome, &parti.numphone, &parti.idade);
 
+            numeros[numparti] = parti.num;
             infparti[numparti++] = parti;
         }
 
@@ -84,7 +85,6 @@ int dos(FILE* txt2, char linha[MAX_LINE_LEN], int numativ, Infativ infativ[10]) 
             //d;d-d-d;d:d:s:d:d:s
             sscanf(linha, "%d;%d-%d-%d;%d:%d;%[^;];%d;%d;%s", &partiativ.num, &partiativ.data.dia, &partiativ.data.mes, &partiativ.data.ano, &partiativ.inicio.hora, &partiativ.inicio.minutos,
                 partiativ.nomeativ, &partiativ.duracao, &partiativ.distancia, partiativ.unidmedida);
-
             infativ[numativ++] = partiativ;
         }
 
@@ -120,6 +120,8 @@ int tres(FILE* txt3, char linha[MAX_LINE_LEN], int numplanativ, Planativ planati
     return numplanativ;
 }
 
+//-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
 void organizetxt1(InfParti infparti[10], int numparti) {
     char b = 1;
     InfParti k[10];
@@ -135,10 +137,57 @@ void organizetxt1(InfParti infparti[10], int numparti) {
             }
         }
     }
-
 }
 
-int a() {
+void organizetxt2(Infativ infativ[10], int numativ) {
+    char b = 1;
+    Infativ k[10];
+
+    while (b == 1) {
+        b = 0;
+        for (int c = 0; c < numativ - 1; c++) {
+            if (infativ[c + 1].num < infativ[c].num) {
+                k[0] = infativ[c];
+                infativ[c] = infativ[c + 1];
+                infativ[c + 1] = k[0];
+                b = 1;
+            }
+        }
+    }
+}
+
+void organizetxt3(Planativ planativ[10], int numplanativ) {
+    char b = 1;
+    Planativ k[10];
+
+    while (b == 1) {
+        b = 0;
+        for (int c = 0; c < numplanativ - 1; c++) {
+            if (planativ[c + 1].num < planativ[c].num) {
+                k[0] = planativ[c];
+                planativ[c] = planativ[c + 1];
+                planativ[c + 1] = k[0];
+                b = 1;
+            }
+        }
+    }
+}
+
+//-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+int main() {
     setlocale(LC_ALL, "");
 
     FILE* txt1;
@@ -147,32 +196,33 @@ int a() {
 
     int numparti = 0; //numero de participantes
     char linha[MAX_LINE_LEN];
-
+    int numeros[50];//Os numeros dos participantes
     txt1 = fopen("txt1.txt", "r");
     InfParti infparti[10];//Array com informação dos participantes
-    numparti = transtxt1(txt1, linha, numparti, infparti);
+    numparti = uno(txt1, linha, numparti, infparti,numeros);
 
     //-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
     txt2 = fopen("txt2.txt", "r");
     Infativ infativ[10];//Array com informação das atividades
     int numativ = 0;
-    numativ = transtxt2(txt2, linha, numativ, infativ);
+    numativ = dos(txt2, linha, numativ, infativ);
 
     //-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
     txt3 = fopen("txt3.txt", "r");
     Planativ planativ[10];//Array com informação das atividades
     int numplanativ = 0;
-    numplanativ = transtxt3(txt3, linha, numplanativ, planativ);
+    numplanativ = tres(txt3, linha, numplanativ, planativ);
+    //-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-    for (int c = 0; c < numparti; c++)
-        printf("%d;%s;%lld;%d\n", infparti[c].num, infparti[c].nome, infparti[c].numphone, infparti[c].idade);
-    printf("\n");
-   
     organizetxt1(infparti, numparti);
 
-    for (int c = 0; c < numparti; c++)
-        printf("%d;%s;%lld;%d\n", infparti[c].num, infparti[c].nome, infparti[c].numphone, infparti[c].idade);
-    printf("\n");
+    organizetxt2(infativ, numativ);
+
+    organizetxt3(planativ, numplanativ);
+
+    //-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+    ex10(numparti,numativ,numplanativ, infparti, infativ, planativ);
 }
