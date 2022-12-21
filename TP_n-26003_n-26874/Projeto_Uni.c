@@ -44,21 +44,9 @@ typedef struct {
     char unidmedida[MAX_LINE_LEN];
 } Planativ;
 
-
-int main() {
-    setlocale(LC_ALL, "");
-
-    FILE* txt1;
-    FILE* txt2;
-    FILE* txt3;
-
-    int numparti = 0; //numero de participantes
-    char linha[MAX_LINE_LEN];
-
-    txt1 = fopen("txt1.txt", "r");
+int transtxt1(FILE* txt1, char linha[MAX_LINE_LEN], int numparti, InfParti infparti[10]) {
 
     InfParti parti; //Participante
-    InfParti infparti[10];//Array com informação dos participantes
 
     if (txt1 == NULL) {
         printf("Erro ao abrir ficheiro txt1");
@@ -77,14 +65,12 @@ int main() {
 
         fclose(txt1);
     }
-    
-    //-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    return numparti;
+}
 
-    txt2 = fopen("txt2.txt", "r");
+int transtxt2(FILE* txt2, char linha[MAX_LINE_LEN], int numativ, Infativ infativ[10]) {
 
     Infativ partiativ; //Participante nas atividades
-    Infativ infativ[10];//Array com informação das atividades
-    int numativ = 0;
 
     if (txt2 == NULL) {
         printf("Erro ao abrir ficheiro txt2");
@@ -93,7 +79,7 @@ int main() {
     else {
 
         while (fgets(linha, MAX_LINE_LEN, txt2) != NULL) {
-                            
+
             //0001;12-07-2022;10:55;Marcha;23;2;km
             //d;d-d-d;d:d:s:d:d:s
             sscanf(linha, "%d;%d-%d-%d;%d:%d;%[^;];%d;%d;%s", &partiativ.num, &partiativ.data.dia, &partiativ.data.mes, &partiativ.data.ano, &partiativ.inicio.hora, &partiativ.inicio.minutos,
@@ -105,14 +91,12 @@ int main() {
         fclose(txt2);
     }
 
-    
-    //-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    return numativ;
+}
 
-    txt3 = fopen("txt3.txt", "r");
+int transtxt3(FILE* txt3, char linha[MAX_LINE_LEN], int numplanativ, Planativ planativ[10]) {
 
     Planativ partplan; //Participante nas atividades
-    Planativ planativ[10];//Array com informação das atividades
-    int numplanativ = 0;
 
     if (txt3 == NULL) {
         perror("Erro ao abrir ficheiro txt3");
@@ -133,11 +117,66 @@ int main() {
         fclose(txt3);
     }
 
+    return numplanativ;
+}
+
+//Organizar a lista de participantes por ordem crescente
+void orgatxt1(InfParti infparti[10], int numparti) {
+    char b = 1;
+    InfParti k[10];
+
+    while (b == 1) {
+        b = 0;
+        for (int c = 0; c < numparti - 1; c++) {
+            if (infparti[c + 1].num < infparti[c].num) {
+                k[0] = infparti[c];
+                infparti[c] = infparti[c + 1];
+                infparti[c + 1] = k[0];
+                b = 1;
+            }
+        }
+    }
+
+}
+
+int main() {
+    setlocale(LC_ALL, "");
+
+    FILE* txt1;
+    FILE* txt2;
+    FILE* txt3;
+
+    int numparti = 0; //numero de participantes
+    char linha[MAX_LINE_LEN];
+
+    txt1 = fopen("txt1.txt", "r");
+    InfParti infparti[10];//Array com informação dos participantes
+    numparti = transtxt1(txt1, linha, numparti, infparti);
+
     //-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+    txt2 = fopen("txt2.txt", "r");
+    Infativ infativ[10];//Array com informação das atividades
+    int numativ = 0;
+    numativ = transtxt2(txt2, linha, numativ, infativ);
+
+    //-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+    txt3 = fopen("txt3.txt", "r");
+    Planativ planativ[10];//Array com informação das atividades
+    int numplanativ = 0;
+    numplanativ = transtxt3(txt3, linha, numplanativ, planativ);
+
+    //-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+    orgatxt1(infparti, numparti);
+  
+    //-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+   
     int numero, diai, mesi, anoi, diaf, mesf, anof, total = 0;
     char nomativ[50];
     printf("Atividades registadas:\n");
-    printf("Marcha\nBTT\nWindsurfing\nNatação\n");
+    printf("Marcha\nBTT\nWindsurfing\nNatacao\n");
     printf("\nNumero da pessoa:");
     scanf("%d", &numero);
     printf("Nome da atividade:");

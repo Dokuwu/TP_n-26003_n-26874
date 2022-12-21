@@ -1,3 +1,6 @@
 0001;Paulo Silva;123456789;52
 0003;Maria Joao Rodrigues;96543210;40
-0002;Joao Nuno Bettencourt;123321123;25
+0005;Joao Nu;123321123;25
+0006;Joao Bettencourt;12341123;42
+0004;Joao Nucourt;123325343;76
+0002;Joao noBetten;1233321323;1
