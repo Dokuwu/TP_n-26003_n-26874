@@ -179,10 +179,8 @@ void orgatxt3(Planativ planativ[10], int numplanativ) {
 //-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 int ex4(Infativ infativ[], int numativ) {
-    int numero, diai, mesi, anoi, diaf, mesf, anof, total = 0;
+    int numero, diai, mesi, anoi, diaf, mesf, anof, verificado = 0, total = 0;
     char nomativ[50];
-    printf("Atividades registadas:\n");
-    printf("Marcha\nBTT\nWindsurfing\nNatacao\n");
     printf("\nNumero da pessoa:");
     scanf("%d", &numero);
     printf("Nome da atividade:");
@@ -192,22 +190,209 @@ int ex4(Infativ infativ[], int numativ) {
     printf("Segunda data [d-m-a]:");
     scanf("%d-%d-%d", &diaf, &mesf, &anof);
 
+    for (int i = 0; i < numativ; i++, verificado = 0) {
+        if (numero == infativ[i].num && !(strcmp(nomativ, infativ[i].nomeativ))) {
 
-    for (int c = 0; c < numativ; c++) {
+            if (anoi < infativ[i].data.ano && anof > infativ[i].data.ano) {
+                verificado = 1;
+            }
 
-        if (numero == infativ[c].num)
-            if ((diai <= infativ[c].data.dia && infativ[c].data.dia <= diaf) && (mesi <= infativ[c].data.mes && infativ[c].data.mes <= mesf)
-                && (anoi <= infativ[c].data.ano && infativ[c].data.ano <= anof) && !(strcmp(nomativ, infativ[c].nomeativ)))
-                total++;
+            if (anoi == infativ[i].data.ano && anof == infativ[i].data.ano) {
 
+                if (mesi < infativ[i].data.mes && mesf > infativ[i].data.mes) {
+                    verificado = 1;
+                }
+                if (mesi <= infativ[i].data.mes && mesf > infativ[i].data.mes) {
+                    if (diai >= infativ[i].data.dia) {
+                        verificado = 1;
+                    }
+                }
+                if (mesi < infativ[i].data.mes && mesf >= infativ[i].data.mes) {
+                    if (diaf <= infativ[i].data.dia) {
+                        verificado = 1;
+                    }
+                }
+            }
+
+            if (anoi == infativ[i].data.ano && anof == infativ[i].data.ano) {
+
+                if (mesi == infativ[i].data.mes && mesf == infativ[i].data.mes) {
+                    if (diai <= infativ[i].data.dia && diaf >= infativ[i].data.dia) {
+                            verificado = 1;
+                        }
+                }
+            }
+
+            if (verificado == 1){
+                    total++;
+            }
+        }
     }
-
     printf("Total: %d\n", total);
 }
 
 //-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-void tabela(int numparti, int numativ, int numplanativ, InfParti infparti[], Infativ infativ[], Planativ planativ[]) {
+void ex5(Infativ infativ[], int n)
+{
+    int  diai, mesi, anoi, diaf, mesf, anof, verificado;
+    printf("Data de inicio: dd-mm-aaaa\n");
+    scanf("%d-%d-%d", &diai, &mesi, &anoi);
+    printf("Data final: dd-mm-aaaa\n");
+    scanf("%d-%d-%d", &diaf, &mesf, &anof);
+
+    printf("\n");
+    for (int i = n, verificado = 0; i > 0; i--, verificado = 0) {
+        if (anoi < infativ[i].data.ano && anof > infativ[i].data.ano) {
+            verificado = 1;
+        }
+
+        if (anoi == infativ[i].data.ano && anof == infativ[i].data.ano) {
+
+            if (mesi < infativ[i].data.mes && mesf > infativ[i].data.mes) {
+                verificado = 1;
+            }
+            if (mesi <= infativ[i].data.mes && mesf > infativ[i].data.mes) {
+                if (diai >= infativ[i].data.dia) {
+                    verificado = 1;
+                }
+            }
+            if (mesi < infativ[i].data.mes && mesf >= infativ[i].data.mes) {
+                if (diaf <= infativ[i].data.dia) {
+                    verificado = 1;
+                }
+            }
+
+        }
+
+        if (anoi == infativ[i].data.ano && anof == infativ[i].data.ano) {
+
+            if (mesi == infativ[i].data.mes && mesf == infativ[i].data.mes) {
+                if (diai <= infativ[i].data.dia && diaf >= infativ[i].data.dia) {
+                    verificado = 1;
+                }
+            }
+        }
+
+        if (verificado == 1)
+        {
+            printf("%d;%d-%d-%d;%d:%d;%s;%d;%d;%s\n", infativ[i].num, infativ[i].data.dia, infativ[i].data.mes, infativ[i].data.ano, infativ[i].inicio.hora, infativ[i].inicio.minutos,
+                infativ[i].nomeativ, infativ[i].duracao, infativ[i].dist, infativ[i].unidmedida);
+
+        }
+    }
+}
+
+//-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+void ex6(Planativ planativ[], int n)
+{
+    int dia_inicio, mes_inicio, ano_inicio, dia_fim, mes_fim, ano_fim, numero_part;
+    char atividade[20];
+    printf("Atividades existentes:\n");
+    for (int i = 0; i < n; i++)
+        printf("%s\n", planativ[i].nomeativ);
+    printf("Introduza uma atividade:\n");
+    scanf("%s", atividade);
+    printf("Introduza o numero de participante\n");
+    scanf("%d", &numero_part);
+    printf("Data inicial dd:mm:aa\n");
+    scanf("%d-%d-%d", &dia_inicio, &mes_inicio, &ano_inicio);
+    printf("Data final dd:mm:aa\n");
+    scanf("%d-%d-%d", &dia_fim, &mes_fim, &ano_fim);
+
+    for (int i = 0; i < n; i++)
+    {
+        if (numero_part == planativ[i].num && strcmp(atividade, planativ[i].nomeativ) == 0)
+        {
+            if ((dia_inicio <= planativ[i].datai.dia && dia_fim >= planativ[i].dataf.dia) && (mes_inicio <= planativ[i].datai.mes && mes_fim >= planativ[i].dataf.mes) && (ano_inicio <= planativ[i].datai.ano && ano_fim >= planativ[i].dataf.ano))
+            {
+                printf("O participante %d tem atividade de %s do dia %d:%d:%d ate ao dia %d:%d:%d. \n", planativ[i].num, planativ[i].nomeativ, planativ[i].datai.dia, planativ[i].datai.mes, planativ[i].datai.ano, planativ[i].dataf.dia, planativ[i].dataf.mes, planativ[i].dataf.ano);
+                printf("Durante esses dias, a atividade ira decorrer das %d:%d ate as %d:%d.\n", planativ[i].horarioi.hora, planativ[i].horarioi.minutos, planativ[i].horariof.hora, planativ[i].horariof.minutos);
+                printf("Onde tera de completar %d %s.\n", planativ[i].dist, planativ[i].unidmedida);
+            }
+        }
+    }
+}
+
+//-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+void ex7(Infativ infativ[], int n)
+{
+    char atividade[20], aux_string[20];
+    int num_part, resultado_total = 0, media_total = 0, vezes = 0, diai, mesi, anoi, diaf, mesf, anof, total_mes, total_dia, verificado = 0;
+    printf("Atividades existentes:\n");
+    for (int i = 0; i < n; i++)
+    {
+        if (strcmp(infativ[i].nomeativ, infativ[i + 1].nomeativ) == 0)
+            continue;
+        printf("%s\n", infativ[i].nomeativ);
+    }
+    printf("Introduza uma atividade:\n");
+    scanf("%s", atividade);
+    printf("Introduza um n de participante:\n");
+    scanf("%d", &num_part);
+    printf("Data inicial dd:mm:aa\n");
+    scanf("%d-%d-%d", &diai, &mesi, &anoi);
+    printf("Data final dd:mm:aa\n");
+    scanf("%d-%d-%d", &diaf, &mesf, &anof);
+    int b = 0;
+    for (int i = 0; i < n; i++){
+
+        if (num_part == infativ[i].num && !(strcmp(atividade, infativ[i].nomeativ))){
+
+            if (anoi < infativ[i].data.ano && anof > infativ[i].data.ano){
+                    verificado = 1;
+            }
+
+            if (anoi == infativ[i].data.ano && anof == infativ[i].data.ano){
+
+                if (mesi < infativ[i].data.mes && mesf > infativ[i].data.mes) {
+                    verificado = 1;
+                }
+                if (mesi <= infativ[i].data.mes && mesf > infativ[i].data.mes) {
+                    if (diai >= infativ[i].data.dia) {
+                        verificado = 1;
+                    }
+                }
+                if (mesi < infativ[i].data.mes && mesf >= infativ[i].data.mes) {
+                    if (diaf <= infativ[i].data.dia) {
+                        verificado = 1;
+                    }
+                }
+
+            }
+                
+            if (anoi == infativ[i].data.ano && anof == infativ[i].data.ano){
+
+                if (mesi == infativ[i].data.mes && mesf == infativ[i].data.mes){
+                        
+                    if (diai <= infativ[i].data.dia && diaf >= infativ[i].data.dia){
+                            verificado = 1;
+                    }
+                }
+            }
+        }
+
+        if (verificado == 1){
+            vezes++;
+            resultado_total += infativ[i].duracao;
+            verificado = 0;
+        }
+    }
+
+    if (vezes == 0){
+        printf("Não foi inserida uma data existente no registo de atividades.\n");
+    }
+    else{
+        media_total = resultado_total / vezes;
+        printf("O participante %d praticou %s durante um tempo total de %d minutos, com uma media de %d minutos.\n", num_part, atividade, resultado_total, media_total);
+    }
+}
+
+//-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+void ex8(int numparti, int numativ, int numplanativ, InfParti infparti[], Infativ infativ[], Planativ planativ[]) {
     //: Número de Praticante, Nome, Atividade planeada, Medida (km, metros, 
     //segundos, outra) da unidade e o Valor dessa medida
     int z = 0;
@@ -236,11 +421,10 @@ void tabela(int numparti, int numativ, int numplanativ, InfParti infparti[], Inf
 
 }
 
-
 //-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
-int a() {
+int main() {
     setlocale(LC_ALL, "");
 
     FILE* txt1;
@@ -281,7 +465,21 @@ int a() {
 
     ex4(infativ , numativ);
 
-    tabela(numparti, numativ, numplanativ, infparti, infativ, planativ);
+    printf("-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------\n");
+    
+    ex5(infativ, numativ);
+
+    printf("-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------\n");
+
+    ex6(planativ, numplanativ);
+
+    printf("-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------\n");
+
+    ex7(infativ, numativ);
+
+    printf("-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------\n");
+
+    ex8(numparti, numativ, numplanativ, infparti, infativ, planativ);
 
     return 0;
 }

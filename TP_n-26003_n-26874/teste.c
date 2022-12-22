@@ -28,7 +28,7 @@ typedef struct {
     Data data;
     char nomeativ[MAX_LINE_LEN];
     Horario inicio;
-    int duracao, distancia;
+    int duracao, dist;
     char unidmedida[MAX_LINE_LEN];
 } Infativ;
 
@@ -37,14 +37,14 @@ typedef struct {
 
 typedef struct {
     int num;
-    Data datainicio, datafim;
-    Horario horarioinicio, horariofim;
+    Data datai, dataf;
+    Horario horarioi, horariof;
     char nomeativ[MAX_LINE_LEN];
-    int distancia;
+    int dist;
     char unidmedida[MAX_LINE_LEN];
 } Planativ;
 
-int uno(FILE* txt1, char linha[MAX_LINE_LEN], int numparti, InfParti infparti[10], int numeros[50]) {
+int uno(FILE* txt1, char linha[MAX_LINE_LEN], int numparti, InfParti infparti[10], int numeros[]) {
 
     InfParti parti; //Participante
 
@@ -84,7 +84,8 @@ int dos(FILE* txt2, char linha[MAX_LINE_LEN], int numativ, Infativ infativ[10]) 
             //0001;12-07-2022;10:55;Marcha;23;2;km
             //d;d-d-d;d:d:s:d:d:s
             sscanf(linha, "%d;%d-%d-%d;%d:%d;%[^;];%d;%d;%s", &partiativ.num, &partiativ.data.dia, &partiativ.data.mes, &partiativ.data.ano, &partiativ.inicio.hora, &partiativ.inicio.minutos,
-                partiativ.nomeativ, &partiativ.duracao, &partiativ.distancia, partiativ.unidmedida);
+                partiativ.nomeativ, &partiativ.duracao, &partiativ.dist, partiativ.unidmedida);
+
             infativ[numativ++] = partiativ;
         }
 
@@ -107,9 +108,9 @@ int tres(FILE* txt3, char linha[MAX_LINE_LEN], int numplanativ, Planativ planati
         while (fgets(linha, MAX_LINE_LEN, txt3) != NULL) {
             //0001; 01 - 01 - 2022; 10h30; 20 - 01 - 2022; 11h45; Marcha; 15; km
             //d;d-d-d;dhd;d-d-d;dhd;%[^;];d;s
-            sscanf(linha, "%d;%d-%d-%d;%dh%d;%d-%d-%d;%dh%d;%[^;];%d;%s", &partplan.num, &partplan.datainicio.dia, &partplan.datainicio.mes, &partplan.datainicio.ano,
-                &partplan.horarioinicio.hora, &partplan.horarioinicio.minutos, &partplan.datafim.dia, &partplan.datafim.mes, &partplan.datafim.ano,
-                &partplan.horariofim.hora, &partplan.horariofim.minutos, partplan.nomeativ, &partplan.distancia, partplan.unidmedida);
+            sscanf(linha, "%d;%d-%d-%d;%dh%d;%d-%d-%d;%dh%d;%[^;];%d;%s", &partplan.num, &partplan.datai.dia, &partplan.datai.mes, &partplan.datai.ano,
+                &partplan.horarioi.hora, &partplan.horarioi.minutos, &partplan.dataf.dia, &partplan.dataf.mes, &partplan.dataf.ano,
+                &partplan.horariof.hora, &partplan.horariof.minutos, partplan.nomeativ, &partplan.dist, partplan.unidmedida);
 
             planativ[numplanativ++] = partplan;
         }
@@ -122,6 +123,7 @@ int tres(FILE* txt3, char linha[MAX_LINE_LEN], int numplanativ, Planativ planati
 
 //-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+//Organizar as arrays com as informações essenciais
 void organizetxt1(InfParti infparti[10], int numparti) {
     char b = 1;
     InfParti k[10];
@@ -129,7 +131,7 @@ void organizetxt1(InfParti infparti[10], int numparti) {
     while (b == 1) {
         b = 0;
         for (int c = 0; c < numparti - 1; c++) {
-            if (infparti[c+1].num < infparti[c].num) {
+            if (infparti[c + 1].num < infparti[c].num) {
                 k[0] = infparti[c];
                 infparti[c] = infparti[c + 1];
                 infparti[c + 1] = k[0];
@@ -137,6 +139,7 @@ void organizetxt1(InfParti infparti[10], int numparti) {
             }
         }
     }
+
 }
 
 void organizetxt2(Infativ infativ[10], int numativ) {
@@ -176,18 +179,7 @@ void organizetxt3(Planativ planativ[10], int numplanativ) {
 //-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
-
-
-
-
-
-
-
-
-
-
-
-int main() {
+int a() {
     setlocale(LC_ALL, "");
 
     FILE* txt1;
@@ -224,5 +216,5 @@ int main() {
 
     //-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-    ex10(numparti,numativ,numplanativ, infparti, infativ, planativ);
+
 }
