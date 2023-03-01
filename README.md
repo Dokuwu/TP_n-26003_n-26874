@@ -1,4 +1,6 @@
 # TP_n-26003_n-26874
+##ADENDO
+Foi realizado um outro repositório para a realização do trabalho. Foi publicado o resultado final do projeto.
 ## Divisão de tarefas
 Neste trabalho de PI, foram propostos 12 problemas para os quais tivemos que fazer funções para os resolver. 
 A divisão de tarefas foi feita facilmente, visto sermos apenas 2 elementos no grupo.
