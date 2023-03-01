@@ -1,0 +1,10 @@
+1;Paulo Silva;123456789;52
+2;Joao Nuno Bettencourt;123321123;25
+3;Maria Joao Rodrigues;96543210;40
+4;Carlos Amaranto;163621629;96
+7;Ana Julia Fogaca;34323010;23
+5;Matheus Correia;95524806;53
+8;Joao Miguel Goncalves;59962013;75
+6;Bianca Souza;85212269;54
+9;Sabrina da Mota;59862013;32
+10;Otavio Ramos;85212270;43
